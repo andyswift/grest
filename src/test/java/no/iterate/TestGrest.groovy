@@ -36,9 +36,15 @@ class TestGrest extends Specification {
         grest.GET( employees: 1 ) { it.firstName } == "James"
     }
 
-    def "search for employee by id result is the content of the response" () {
+    def "search for employee by id result is the return value from the closure" () {
         expect:
         grest.GET( employees: 1 ,{it.id}) == 1
+    }
+
+    def "search for employee by id result is an employee" () {
+        Employee employee = new Employee(id:1, firstName: "James")
+        expect:
+        grest.GET( employees: 1 ,{new Employee(it)}) == employee
     }
 
     def "How about on the String" () {
