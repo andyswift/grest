@@ -33,10 +33,12 @@ class Grest {
         result;
     }
 
-    void GET(String path , Closure closure) {
+    def GET(String path , Closure closure) {
+        def result;
         restClient.get(path:path){ response, content ->
-            closure.call(content)
+            result = closure.call(content)
         }
+        result;
     }
 
     def GET(params) {
@@ -45,7 +47,7 @@ class Grest {
         result;
     }
 
-    void GET(params , Closure closure) {
+    def GET(params , Closure closure) {
         if(params.entity) {
             GET(params.entity,closure)
         }

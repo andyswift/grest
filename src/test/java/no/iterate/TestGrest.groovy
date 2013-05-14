@@ -23,7 +23,7 @@ class TestGrest extends Specification {
 
     def "fetch automatically based on an enum with closure" () {
         expect:
-        grest.GET(employees) { assert it.id == 1..12 }
+        1..12 == grest.GET(employees) { it.id }
     }
 
     def "search for employee by id" () {
@@ -33,6 +33,29 @@ class TestGrest extends Specification {
 
     def "search for employee by id with closure" () {
         expect:
-        grest.GET( employees: 1 ) { assert it.firstName == "James" }
+        grest.GET( employees: 1 ) { it.firstName } == "James"
     }
+
+    def "search for employee by id result is the content of the response" () {
+        expect:
+        grest.GET( employees: 1 ,{it.id}) == 1
+    }
+
+    def "How about on the String" () {
+        String.metaClass.GET = {
+            grest.GET(delegate)
+        }
+        expect:
+        "/employees/1".GET().id == 1
+    }
+
+    def "How about on the String with a closure" () {
+        String.metaClass.GET = {Closure c ->
+            grest.GET(delegate,c)
+        }
+
+        expect:
+        "/employees/1".GET{it.id} == 1
+    }
+
 }
