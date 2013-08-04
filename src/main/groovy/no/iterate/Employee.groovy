@@ -1,5 +1,7 @@
 package no.iterate
 
+import groovy.transform.TupleConstructor
+
 /**
  * Explain the responsibility of this class
  */

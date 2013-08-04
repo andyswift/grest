@@ -8,7 +8,7 @@ import static groovyx.net.http.ContentType.HTML
 import static groovyx.net.http.ContentType.JSON
 
 /**
- * Explain the responsibility of this class
+ * Tests using the Rest Client against the local REST service
  */
 class TestRestClient extends Specification {
 

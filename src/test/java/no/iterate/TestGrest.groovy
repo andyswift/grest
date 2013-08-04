@@ -1,7 +1,7 @@
 package no.iterate
 
 import spock.lang.Specification
-import static no.iterate.Grest.Entities.employees
+import static no.iterate.Entities.employees
 
 /**
  * Tests the Groovy DSL for Rest aka Grest
@@ -42,26 +42,35 @@ class TestGrest extends Specification {
     }
 
     def "search for employee by id result is an employee" () {
+        given:
         Employee employee = new Employee(id:1, firstName: "James")
         expect:
         grest.GET( employees: 1 ,{new Employee(it)}) == employee
     }
 
-    def "How about on the String" () {
+    def "Possible to make a GET request on a String" () {
         String.metaClass.GET = {
             grest.GET(delegate)
         }
         expect:
-        "/employees/1".GET().id == 1
+        "/employees/1".GET().firstName == "James"
     }
 
-    def "How about on the String with a closure" () {
-        String.metaClass.GET = {Closure c ->
+    def "Possible to make a GET request on a String and map the response to an Object" () {
+
+        //Adds a GET method to all Strings
+        //which will perform a HTTP request to the path specified by the String
+        String.metaClass.GET = { Closure c ->
             grest.GET(delegate,c)
         }
 
+        given:
+        Employee e = "/employees/1".GET {
+            new Employee(it)
+        }
+
         expect:
-        "/employees/1".GET{it.id} == 1
+        e.firstName == "James"
     }
 
 }
