@@ -8,7 +8,7 @@ import static no.iterate.Entities.employees
  */
 class TestGrest extends Specification {
 
-    private Grest grest = new Grest("localhost:3000")
+    private Grest grest = new Grest("10.0.1.49:3000")
 
     def "making a get request causes data to be fetched from a server" () {
         expect:
